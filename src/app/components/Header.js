@@ -1,9 +1,9 @@
 const Header = () => {
   return (
-    <div className="header">
-      <div className="header-container">
+    <div id="header">
+      <div id="header-container">
         <a href="/">
-        <p>ruleaid</p>
+          <p id="header-text">ruleaid</p>
         </a>
       </div>
     </div>

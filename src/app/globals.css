@@ -1,15 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Khula:wght@300;400;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Khula:wght@300;400;600;700;800&display=swap");
 @import url("https://use.typekit.net/uvs1cro.css");
 
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-  --primary-dark: #2C2E3A;
-  --primary-light: #F6F6F6;
+  --primary-dark: #2c2e3a;
+  --primary-light: #f6f6f6;
+  --secondary-dark: #b2b2b2;
+  --analyse: #9d87d9;
+  --compare: #e08072;
+  --clarify: #7cc287;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -26,56 +30,76 @@ body {
 
 p {
   color: var(--primary-dark);
-  font-family: Khula, 'sans-serif';
   font-weight: 400;
   font-size: 14px;
   font-style: normal;
 }
 
-.extracted-text-box {
+#extracted-text-box {
   border-radius: 4px;
   border: 1px solid rgba(0, 0, 0, 0.15);
-  background: #FFF;
-  box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, 0.20);
+  background: #fff;
+  box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, 0.2);
   width: 595px;
   height: 845px;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 30px;
+  overflow: hidden;
 }
 
-.extracted-text {
-  width: 455px;
+#extracted-text {
+  width: 100%;
   color: var(--primary-dark);
-  font-family: Khula, 'sans-serif';
   font-weight: 400;
   font-size: 14px;
   font-style: normal;
-  background-color: aqua;
-  overflow-wrap: break-word;
+  height: 100%;
+  overflow-y: auto;
+  word-wrap: break-word;
 }
 
-.header-container {
+#extracted-text-box-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 595px;
+  height: 100%;
+}
+
+#header-container {
   display: flex;
   height: 47px;
   align-items: left;
   flex-shrink: 0;
-  background-color: aliceblue;
 }
 
-.header {
+#header {
   padding: 41px 48px 42px 48px;
-  background-color: aquamarine;
 }
 
-.header, p {
-  font-family: "Abhaya Libre ExtraBold", 'serif';
+#header-text {
+  font-family: "Abhaya Libre ExtraBold", "serif";
   font-size: 42.235px;
   font-style: normal;
   font-weight: 800;
   line-height: normal;
-  color: var(--primary-dark)
+  color: var(--primary-dark);
+}
+
+.card {
+  padding: 20px 14px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  align-self: stretch;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: #fff;
+  box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  margin-right: 40px;
 }
 
 @layer utilities {
