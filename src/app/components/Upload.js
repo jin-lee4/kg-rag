@@ -83,6 +83,7 @@ const Upload = () => {
             taciti sociosqu ad litora torquent per conubia nostra, per inceptos
             himenaeos.
           </p>
+      
           {/* <pre className="extracted-text">{text}</pre> */}
         </div>
       </div>

@@ -1,15 +1,16 @@
 "use client";
 import { useState } from "react";
 
-const Toggle = () => {
+const Toggle = ( { onToggle }) => {
   const [isOn, setIsOn] = useState(false);
 
   const toggle = () => {
     setIsOn(!isOn);
+    onToggle();
   };
 
   return (
-    <div className="flex items-center px-5">
+    <div className="flex items-center ">
       <button
         onClick={toggle}
         className={`${
