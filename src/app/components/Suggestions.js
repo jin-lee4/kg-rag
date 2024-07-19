@@ -1,4 +1,7 @@
-import Suggestion from "./Suggestion";
+"use client"; // Add this line
+
+import React from 'react';
+import Suggestion from "./Suggestion"; // Correct import
 
 const Suggestions = () => {
   return (
