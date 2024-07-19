@@ -1,11 +1,11 @@
 "use client"; // Add this line
 
 import React from 'react';
-import Suggestion from "./Suggestion"; // Correct import
+import Suggestion from "./Suggestion"; 
 
 const Suggestions = () => {
   return (
-    <div className="space-y-3.5">
+    <div id="suggestions-container">
       <Suggestion
         borderColor="#e08072"
         title="Compare"

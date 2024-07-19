@@ -10,6 +10,8 @@
   --background-color: #f6f6f6;
   --document-color: #fff;
   --disabled-state: rgba(44, 46, 58, 0.15);
+  --border: rgba(0, 0, 0, 0.15);
+  --box-shadow: rgba(0, 0, 0, 0.2);
   /* annotation modes */
   --analyse: #9d87d9;
   --compare: #e08072;
@@ -24,6 +26,7 @@
   --document-color: #25262A;
   --text-color: #fff;
   --disabled-state: rgba(255, 255, 255, 0.15);
+  --box-shadow: rgba(0, 0, 0, 0.20);
   /* dark mode annotations */
   --analyse: #8368CC;
   --compare: #CE6969;
@@ -71,16 +74,17 @@ h3 {
 
 #extracted-text-box {
   border-radius: 4px;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--border);
   background: var(--document-color);
   box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, 0.2);
   width: 100%;
-  display: flex;
+  /* display: flex; */
   align-items: center;
   justify-content: center;
   padding: 30px;
   overflow: hidden;
   height: 100%;
+  overflow-y: scroll;
 }
 
 #extracted-text {
@@ -91,6 +95,10 @@ h3 {
   font-style: normal;
   overflow-y: auto;
   word-wrap: break-word;
+}
+
+#extracted-text-box::-webkit-scrollbar, #suggestions-container::-webkit-scrollbar {
+  display: none;
 }
 
 #header-container {
@@ -136,9 +144,11 @@ h3 {
   align-items: flex-start;
   border-radius: 4px;
   background: var(--document-color);
-  box-shadow: 2px 2px 6px 0px rgba(224, 128, 114, 0.15);
+  box-shadow: 2px 2px 6px 0px rgba(224, 128, 114, 0.15); /* change based on mode */
   flex-direction: column;
-  width: 100%;
+  margin-top: 14px; /* should change based on location of annotations */
+  margin-bottom: 14px;
+  height: 100%;
   /* Ensure the container takes the full width */
 }
 
@@ -146,16 +156,59 @@ h3 {
   flex: 1 0 0;
 }
 
+#suggestions-container {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  overflow-y: scroll;
+  height: 100%;
+}
+
+#upload-container {
+  border-radius: 4px;
+  padding: 10px;
+  align-items: center;
+  gap: 10px;
+  background: var(--document-color);
+  box-shadow: 2px 2px 8px 0px var(--box-shadow);
+}
+
+#upload-box {
+  display: flex;
+  padding: 248px 80.5px 248px 80.5px;
+  align-items: center;
+  gap: 10px;
+  border-radius: 4px;
+  border: 3px dashed var(--border);
+  background: var(--document-color)
+}
+
+#upload-content {
+  display: flex;
+  width: 414px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 44px;
+}
+
 #right-panel {
   min-width: 25%;
+  flex: 1;
+  height: 100vh; /* Adjust based on your preference */
+}
+
+#center-panel {
+  min-width: 50%;
+  height: 100vh; /* Adjust based on your preference */
 }
 
 #left-panel {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-left: 48px;
   min-width: 25%;
+  flex: 1;
 }
 
 #settings-panel {
