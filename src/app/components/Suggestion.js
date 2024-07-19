@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 
 const Suggestion = ({ borderColor, title, description }) => {
   const [chatMessage, setChatMessage] = useState('');
+  const [chatHistory, setChatHistory] = useState([]);
 
   const handleChatChange = (e) => {
     setChatMessage(e.target.value);
@@ -11,7 +12,7 @@ const Suggestion = ({ borderColor, title, description }) => {
 
   const handleSubmit = () => {
     // Add your submit logic here
-    console.log('Submitted:', chatMessage);
+    setChatHistory([...chatHistory, { text: chatMessage, sender: 'user' }]);
     setChatMessage('');
   };
 
@@ -22,21 +23,28 @@ const Suggestion = ({ borderColor, title, description }) => {
   return (
     <div
       id="suggestion-container"
-      style={{ border: `3px solid ${borderColor}`, padding: '16px', borderRadius: '8px', maxWidth: '500px', boxSizing: 'border-box' }}
+      style={{ border: `3px solid ${borderColor}`, padding: '16px', borderRadius: '8px', maxWidth: '500px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column' }}
     >
       <div>
         <p className="small-text" style={{ fontWeight: 'bold', marginBottom: '8px' }}>{title}</p>
       </div>
       <div id="suggestion-text"><p>{description}</p></div>
-      <div style={{ marginTop: '16px' }}>
+      <div style={{ marginTop: '13px', flex: '1 1 auto' }}>
+        <div style={{ marginBottom: '13px', padding: '8px 0', maxHeight: '200px', overflowY: 'auto' }}>
+          {chatHistory.map((message, index) => (
+            <div key={index} style={{ marginBottom: '8px', textAlign: message.sender === 'user' ? 'right' : 'left', fontFamily: 'inherit', fontSize: 'inherit', color: 'inherit', fontWeight: 'normal' }}>
+            {message.text}
+            </div>
+          ))}
+        </div>
         <input
           type="text"
           value={chatMessage}
           onChange={handleChatChange}
           placeholder="Ask ruleaid..."
           style={{
-            width: '330px',
-            padding: '6px',
+            width: '335px',
+            padding: '8px',
             borderRadius: '4px',
             border: '1px solid #ccc',
             marginBottom: '16px',
@@ -74,4 +82,4 @@ const Suggestion = ({ borderColor, title, description }) => {
   );
 };
 
-export default Suggestion; // Use default export
+export default Suggestion;
