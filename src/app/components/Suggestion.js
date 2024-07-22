@@ -29,11 +29,11 @@ const Suggestion = ({ borderColor, title, description }) => {
         <p className="small-text" style={{ fontWeight: 'bold', marginBottom: '8px' }}>{title}</p>
       </div>
       <div id="suggestion-text"><p>{description}</p></div>
-      <div style={{ marginTop: '13px', flex: '1 1 auto' }}>
-        <div style={{ marginBottom: '13px', padding: '8px 0', maxHeight: '200px', overflowY: 'auto' }}>
+      <div style={{ marginTop: '8px', flex: '1 1 auto' }}>
+        <div style={{ marginBottom: '8px', padding: '8px 0', maxHeight: '200px', overflowY: 'auto' }}>
           {chatHistory.map((message, index) => (
-            <div key={index} style={{ marginBottom: '8px', textAlign: message.sender === 'user' ? 'right' : 'left', fontFamily: 'inherit', fontSize: 'inherit', color: 'inherit', fontWeight: 'normal' }}>
-            {message.text}
+            <div key={index} style={{ marginBottom: '4px', textAlign: message.sender === 'user' ? 'right' : 'left' }}>
+              {message.text}
             </div>
           ))}
         </div>
