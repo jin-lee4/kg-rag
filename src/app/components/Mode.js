@@ -9,7 +9,7 @@ const Mode = ({ count, title, description, bgColor, toggleColor }) => {
         className={`flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full text-white font-bold`}
         style={{ backgroundColor: bgColor }}
       >
-        <h3>{count}</h3>
+        <h3 id="count">{count}</h3>
       </div>
       <div className="ml-4 flex-grow">
         <div className="flex justify-between items-center">

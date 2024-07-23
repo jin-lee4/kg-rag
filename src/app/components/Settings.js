@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import Toggle from "./Toggle";
+import DarkModeToggle from "./DarkModeToggle";
 
 const Setting = () => {
   // const [darkMode, setDarkMode] = useState(false);
@@ -64,7 +64,7 @@ const Setting = () => {
           </svg>
           <h3>Dark Mode</h3>
         </div>
-        <Toggle onToggle={toggleTheme} />
+        <DarkModeToggle onToggle={toggleTheme} />
       </div>
       <div className="flex justify-between pt-3.5 border-b pb-3.5">
         <div className="flex items-center space-x-5">

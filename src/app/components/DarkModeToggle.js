@@ -1,11 +1,12 @@
 "use client";
 import { useState } from "react";
 
-const Toggle = () => {
+const DarkModeToggle = ( { onToggle }) => {
   const [isOn, setIsOn] = useState(false);
 
   const toggle = () => {
     setIsOn(!isOn);
+    onToggle();
   };
 
   return (
@@ -26,4 +27,4 @@ const Toggle = () => {
   );
 };
 
-export default Toggle;
+export default DarkModeToggle;
