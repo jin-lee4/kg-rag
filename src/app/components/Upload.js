@@ -1,7 +1,19 @@
 "use client";
 import { useState } from "react";
 
+import { ApiService, Instruction, AnalyzeInstruction, CompareInstruction, ClarifyInstruction } from "../util/backend.js";
+
 const Upload = () => {
+  const test = async () => {
+    let service = new ApiService("http://localhost:8504");
+    let analyze_inst = new AnalyzeInstruction(service);
+    let compare_inst = new CompareInstruction(service);
+    let clarify_inst = new ClarifyInstruction(service);
+
+    console.log("asking analyze question");
+    console.log(await analyze_inst.query("02b2b870-7ed9-4500-9931-2a17d0b06c70", "Who was empress elizabeth?"));
+  };
+  
   const [file, setFile] = useState(null);
   const [text, setText] = useState("");
   const [isUploaded, setIsUploaded] = useState(false);
@@ -44,6 +56,8 @@ const Upload = () => {
     <div className="h-full">
       {/* <input type="file" accept="application/pdf" onChange={handleFileChange} />
       <button onClick={handleUpload}>Upload</button> */}
+        
+      <button onClick={test}>Test</button>      
       
       <div id="extracted-text-box">
         <div id="extracted-text">
