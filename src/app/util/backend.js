@@ -4,12 +4,34 @@ class ApiService {
     this.baseUrl = url;
   }
 
-  async upload(file) {
-    return null;
+  async upload(file_form) {
+    /*
+      @params:  fileForm - a FormData object containing a file (ie... form.append("file", file))
+      @purpose: Upload a file to the backend for use in RAG pipeline
+      @returns: JSON with 'uuid' key, representing the file that was uploaded (to be used in future requests)
+    */
+    const response = await fetch(`${this.baseUrl}/api/v1/upload`, {
+      method: 'POST',
+      headers: {
+        "Accept": "application/pdf",
+        "Content-Type": "application/pdf"
+      }
+      body: file_form
+    });
+
+    return response;
   }
 
   async query(uuid, question, instructions, chatHistory) {
     /*
+      @params:  uuid - a string UUID representing an uploaded document,
+                question - a string representing a question to ask the AI,
+                instructions - a list of Instruction's,
+                chatHistory - a list of ordered string pairs represented as lists
+      @purpose: POST to /api/v1/query to get AI response back for analysis
+      @returns: JSON with 'response' key, indicating AI response
+
+      Constructs JSON of form:
       {
         "uuid": "...",
         // what the AI will do
@@ -23,7 +45,7 @@ class ApiService {
     const json = JSON.stringify({
       "uuid": uuid,
       "question": question,
-      "instructions": instructions,
+      "instructions": instructions.map(i => i.instruction),
       "chatHistory": chatHistory,
     });
 
@@ -41,48 +63,26 @@ class ApiService {
 }
 
 class Instruction {
-  constructor(apiService) {
-    if (new.target === Instruction) {
-      throw new TypeError('Cannot construct Instruction instances directly');
-    }
-    this.apiService = apiService;
-  }
-
-  async query(uuid, question, chatHistory = []) {
-    throw new Error('Method query() must be implemented.');
+  constructor(instruction) {
+    this.instruction = instruction;
   }
 }
 
 class AnalyzeInstruction extends Instruction {
-  constructor(apiService) {
-    super(apiService);
-  }
-
-  async query(uuid, question, chatHistory = []) {
-    let instructions = ["Identify gaps, considerations, and implications of your policies given your industry, needs, and organisation size."];
-    return await this.apiService.query(uuid, question, instructions, chatHistory)
+  constructor() {
+    super("Identify gaps, considerations, and implications of your policies given your industry, needs, and organisation size.");
   }
 }
 
 class CompareInstruction extends Instruction {
   constructor(apiService) {
-    super(apiService);
-  }
-
-  async query(uuid, question, chatHistory = []) {
-    let instructions = ["Check whether your policy complies with governmental policies, and aligns with industry standards."];
-    return await this.apiService.query(uuid, question, instructions, chatHistory)
+    super("Check whether your policy complies with governmental policies, and aligns with industry standards.");
   }
 }
 
 class ClarifyInstruction extends Instruction {
   constructor(apiService) {
-    super(apiService);
-  }
-
-  async query(uuid, question, chatHistory = []) {
-    let instructions = ["Clarify ambiguities in your policies to ensure they are easily understood and effectively implemented."];
-    return await this.apiService.query(uuid, question, instructions, chatHistory)
+    super("Clarify ambiguities in your policies to ensure they are easily understood and effectively implemented.");
   }
 }
 
