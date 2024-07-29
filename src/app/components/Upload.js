@@ -2,6 +2,19 @@
 import { useState } from "react";
 
 const Upload = ({ modes, onSuggestions }) => {
+import { ApiService, Instruction, AnalyzeInstruction, CompareInstruction, ClarifyInstruction } from "../util/backend.js";
+
+const Upload = () => {
+  const test = async () => {
+    let service = new ApiService("http://localhost:8504");
+    let analyze_inst = new AnalyzeInstruction(service);
+    let compare_inst = new CompareInstruction(service);
+    let clarify_inst = new ClarifyInstruction(service);
+
+    console.log("asking analyze question");
+    console.log(await analyze_inst.query("02b2b870-7ed9-4500-9931-2a17d0b06c70", "Who was empress elizabeth?"));
+  };
+  
   const [file, setFile] = useState(null);
   const [text, setText] = useState("");
   // TODO: Deal with analysis text after ensuring PDF is successfully extracted
@@ -77,7 +90,70 @@ const Upload = ({ modes, onSuggestions }) => {
         <div className="loading-indicator">
           <p>Uploading and processing file...</p>
           {/* You can add a spinner or other loading animation here */}
-        </div>
+{/* FIX THIS 
+    <div className="h-full">
+      {/* <input type="file" accept="application/pdf" onChange={handleFileChange} />
+      <button onClick={handleUpload}>Upload</button> */}
+        
+      <button onClick={test}>Test</button>      
+      
+      <div id="extracted-text-box">
+        <div id="extracted-text">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In feugiat
+            vitae leo vel aliquet. Phasellus pellentesque gravida mi in
+            sagittis. Aenean ultricies suscipit urna, nec scelerisque elit
+            viverra quis. Orci varius natoque penatibus et magnis dis parturient
+            montes, nascetur ridiculus mus. Mauris faucibus feugiat dui ac
+            viverra. Aliquam ac ipsum vestibulum, dictum magna sed, ornare
+            neque. Integer interdum arcu quis egestas pretium.
+          </p><br/><br/>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In feugiat
+            vitae leo vel aliquet. Phasellus pellentesque gravida mi in
+            sagittis. Aenean ultricies suscipit urna, nec scelerisque elit
+            viverra quis. Orci varius natoque penatibus et magnis dis parturient
+            montes, nascetur ridiculus mus. Mauris faucibus feugiat dui ac
+            viverra. Aliquam ac ipsum vestibulum, dictum magna sed, ornare
+            neque. Integer interdum arcu quis egestas pretium.
+          </p><br/>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In feugiat
+            vitae leo vel aliquet. Phasellus pellentesque gravida mi in
+            sagittis. Aenean ultricies suscipit urna, nec scelerisque elit
+            viverra quis. Orci varius natoque penatibus et magnis dis parturient
+            montes, nascetur ridiculus mus. Mauris faucibus feugiat dui ac
+            viverra. Aliquam ac ipsum vestibulum, dictum magna sed, ornare
+            neque. Integer interdum arcu quis egestas pretium.
+          </p><br/>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In feugiat
+            vitae leo vel aliquet. Phasellus pellentesque gravida mi in
+            sagittis. Aenean ultricies suscipit urna, nec scelerisque elit
+            viverra quis. Orci varius natoque penatibus et magnis dis parturient
+            montes, nascetur ridiculus mus. Mauris faucibus feugiat dui ac
+            viverra. Aliquam ac ipsum vestibulum, dictum magna sed, ornare
+            neque. Integer interdum arcu quis egestas pretium.
+          </p><br/>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In feugiat
+            vitae leo vel aliquet. Phasellus pellentesque gravida mi in
+            sagittis. Aenean ultricies suscipit urna, nec scelerisque elit
+            viverra quis. Orci varius natoque penatibus et magnis dis parturient
+            montes, nascetur ridiculus mus. Mauris faucibus feugiat dui ac
+            viverra. Aliquam ac ipsum vestibulum, dictum magna sed, ornare
+            neque. Integer interdum arcu quis egestas pretium.
+          </p><br/>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In feugiat
+            vitae leo vel aliquet. Phasellus pellentesque gravida mi in
+            sagittis. Aenean ultricies suscipit urna, nec scelerisque elit
+            viverra quis. Orci varius natoque penatibus et magnis dis parturient
+            montes, nascetur ridiculus mus. Mauris faucibus feugiat dui ac
+            viverra. Aliquam ac ipsum vestibulum, dictum magna sed, ornare
+            neque. Integer interdum arcu quis egestas pretium.
+          </p><br/>
+        </div> */}
       ) : isUploaded ? (
         <div id="extracted-text">
           <pre className="extracted-text">
