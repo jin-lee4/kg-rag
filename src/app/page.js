@@ -38,20 +38,23 @@ export default function Home() {
           </div>
         </div>
         <div id="center-panel" className="flex-grow flex flex-col h-full">
-          <Upload modes={modes} onSuggestions={handleSuggestions} />
+          <Upload
+            modes={modes}
+            onSuggestions={handleSuggestions}
+            onUploadStatus={handleUploadStatus}
+          />
         </div>
         <div id="right-panel" className="flex-grow flex flex-col h-full">
-          {/* {isUploaded ? (
-            <Suggestions suggestions={suggestions} />
-          ) : (
+          {!isUploaded ? (
             <div id="how-it-works">
               <h3>How it works</h3>
-              <h3>1. Upload your policy dcument</h3>
+              <h3>1. Upload your policy document</h3>
               <h3>2. Ruleaid will generate insights</h3>
               <h3>3. Revise, re-prompt, and revise!</h3>
             </div>
-          )} */}
-          <Suggestions suggestions={suggestions} />
+          ) : suggestions.length > 0 ? (
+            <Suggestions suggestions={suggestions} />
+          ) : null}
         </div>
       </div>
     </main>
