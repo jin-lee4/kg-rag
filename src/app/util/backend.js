@@ -4,7 +4,7 @@ class ApiService {
     this.baseUrl = url;
   }
 
-  async upload(file_form) {
+  async upload(fileForm) {
     /*
       @params:  fileForm - a FormData object containing a file (ie... form.append("file", file))
       @purpose: Upload a file to the backend for use in RAG pipeline
@@ -15,14 +15,14 @@ class ApiService {
       headers: {
         "Accept": "application/pdf",
         "Content-Type": "application/pdf"
-      }
-      body: file_form
+      },
+      body: fileForm
     });
 
     return response;
   }
 
-  async query(uuid, question, instructions, chatHistory) {
+  async query(uuid, question, instructions = [], chatHistory = []) {
     /*
       @params:  uuid - a string UUID representing an uploaded document,
                 question - a string representing a question to ask the AI,
