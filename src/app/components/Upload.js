@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 
+const Upload = ({ modes, onSuggestions }) => {
 import { ApiService, Instruction, AnalyzeInstruction, CompareInstruction, ClarifyInstruction } from "../util/backend.js";
 
 const Upload = () => {
@@ -16,43 +17,80 @@ const Upload = () => {
   
   const [file, setFile] = useState(null);
   const [text, setText] = useState("");
+  // TODO: Deal with analysis text after ensuring PDF is successfully extracted
+  const [analysis, setAnalysis] = useState("");
   const [isUploaded, setIsUploaded] = useState(false);
+  const [isAnalyzed, setIsAnalyzed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
 
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const files = e.dataTransfer.files;
+    if (files.length) {
+      setFile(files[0]);
+      handleUpload();
+    }
+  };
+
   const handleUpload = async () => {
     if (!file) return;
+    setIsLoading(true); // Set loading to true when upload starts
 
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await fetch("/api/upload", {
+    //uploadResponse extracts PDF text with OCR
+    const uploadResponse = await fetch("/api/v1/upload", {
       method: "POST",
       body: formData,
     });
 
-    if (response.ok) {
-      const result = await response.json();
-      const ocrResponse = await fetch("/api/ocr", {
+    if (uploadResponse.ok) {
+      const result = await uploadResponse.json();
+      const filePath = result.uuid;
+      const extractedText = result.text; // Assuming the API returns the extracted text
+      setText(extractedText);
+      setIsUploaded(true);
+      console.log("File uploaded successfully. File path:", filePath);
+      console.log("Extracted text:", extractedText);
+
+      //analyzeResponse analyzes text and returns suggestions based on toggled modes
+      console.log("Analyzing the file...");
+      const analyzeResponse = await fetch("/api/v1/analyze", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ filePath: result.filePath }),
+        body: JSON.stringify({ text: extractedText, modes }),
       });
 
-      if (ocrResponse.ok) {
-        const ocrResult = await ocrResponse.json();
-        setText(ocrResult.text); // Display the extracted text
+      if (analyzeResponse.ok) {
+        const analyzeResponse = await analyzeResponse.json();
+        setAnalysis(analyzeResponse.text); // Display the extracted text
+        setIsAnalyzed(true);
       }
     } else {
-      console.error("Upload failed");
+      console.error("Analysis failed");
     }
   };
 
   return (
+    <div id="extracted-text-box">
+      {isLoading ? (
+        <div className="loading-indicator">
+          <p>Uploading and processing file...</p>
+          {/* You can add a spinner or other loading animation here */}
+{/* FIX THIS 
     <div className="h-full">
       {/* <input type="file" accept="application/pdf" onChange={handleFileChange} />
       <button onClick={handleUpload}>Upload</button> */}
@@ -115,19 +153,19 @@ const Upload = () => {
             viverra. Aliquam ac ipsum vestibulum, dictum magna sed, ornare
             neque. Integer interdum arcu quis egestas pretium.
           </p><br/>
-        </div>
-      </div>
-      {/* {isUploaded ? (
-        <div id="extracted-text-box">
-          <div id="extracted-text">
-            <pre className="extracted-text">{text}</pre>
-          </div>
+        </div> */}
+      ) : isUploaded ? (
+        <div id="extracted-text">
+          <pre className="extracted-text">
+            {/* Displays extracted text first, then analysis once complete */}
+            {isAnalyzed ? analysis : text}
+          </pre>
         </div>
       ) : (
-        <div id="upload-container">
-          <div id="upload-box">
-            <div id="upload-content">
-              <div>
+        <div id="upload-box" onDragOver={handleDragOver} onDrop={handleDrop}>
+          <div id="upload-content">
+            <div>
+              <label htmlFor="fileInput" className="cursor-pointer">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="111"
@@ -159,23 +197,30 @@ const Upload = () => {
                     d="M62.2621 87.6857C61.7251 87.1488 61.7251 86.2782 62.2621 85.7412L75.526 72.4773C76.5999 71.4034 78.3411 71.4034 79.4151 72.4773L92.6789 85.7412C93.2159 86.2782 93.2159 87.1488 92.6789 87.6857L89.7621 90.6026C89.2251 91.1395 88.3545 91.1395 87.8176 90.6026L80.908 83.693V102.894C80.908 103.654 80.2924 104.269 79.533 104.269H75.408C74.6486 104.269 74.033 103.654 74.033 102.894V83.693L67.1235 90.6026C66.5865 91.1395 65.7159 91.1395 65.1789 90.6026L62.2621 87.6857Z"
                     fill="#2C2E3A"
                   />
-                </svg>
-              </div>
-              <div className="items-center justify-center flex flex-col space-y-3">
-                <h3>Drag and drop an file or browse </h3>
-                <input
-                  type="file"
-                  accept="application/pdf"
-                  onChange={handleFileChange}
-                  className="w-full"
-                />
-                <button onClick={handleUpload}>Upload</button>
-                <p>File must be PDF</p>
-              </div>
+                </svg>{" "}
+              </label>
+            </div>
+            <div className="items-center justify-center flex flex-col space-y-3">
+              <h3>
+                <label htmlFor="fileInput">
+                  Drag and drop an file or browse
+                </label>
+              </h3>
+              <input
+                id="fileInput"
+                type="file"
+                accept="application/pdf"
+                onChange={(e) => {
+                  handleFileChange(e);
+                  handleUpload();
+                }}
+                className="hidden"
+              />
+              <p>File must be PDF</p>
             </div>
           </div>
         </div>
-      )} */}
+      )}
     </div>
   );
 };

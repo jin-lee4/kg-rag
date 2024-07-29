@@ -1,8 +1,13 @@
 import Toggle from "./Toggle";
 
-const Mode = ({ count, title, description, bgColor, toggleColor }) => {
-
-
+const Mode = ({
+  count,
+  title,
+  description,
+  bgColor,
+  toggleColor,
+  onToggle,
+}) => {
   return (
     <div className="flex items-start justify-between border-b py-4 border-gray-200 w-full">
       <div
@@ -14,7 +19,11 @@ const Mode = ({ count, title, description, bgColor, toggleColor }) => {
       <div className="ml-4 flex-grow">
         <div className="flex justify-between items-center">
           <h3>{title}</h3>
-          <Toggle toggleColor={toggleColor} className="items-end"/>
+          <Toggle
+            onToggle={onToggle}
+            className="items-end"
+            activeColor={toggleColor}
+          />
         </div>
         <p className="mt-2 text-xs">{description}</p>
       </div>
