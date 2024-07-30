@@ -1,4 +1,3 @@
-
 class ApiService {
   constructor(url) {
     this.baseUrl = url;
@@ -10,16 +9,24 @@ class ApiService {
       @purpose: Upload a file to the backend for use in RAG pipeline
       @returns: JSON with 'uuid' key, representing the file that was uploaded (to be used in future requests)
     */
+    // const response = await fetch(`${this.baseUrl}/api/v1/upload`, {
+    //   method: 'POST',
+    //   headers: {
+    //     "Accept": "application/pdf",
+    //     "Content-Type": "application/pdf"
+    //   },
+    //   body: fileForm
+    // });
+
     const response = await fetch(`${this.baseUrl}/api/v1/upload`, {
-      method: 'POST',
-      headers: {
-        "Accept": "application/pdf",
-        "Content-Type": "application/pdf"
-      },
-      body: fileForm
+      method: "POST",
+      body: fileForm,
     });
 
-    return response;
+    const data = await response.json();
+    return data; // Return the parsed JSON data
+
+    // return response;
   }
 
   async query(uuid, question, instructions = [], chatHistory = []) {
@@ -42,23 +49,28 @@ class ApiService {
       }
     */
 
+    console.log("uuid: ", uuid);
+    console.log("question: ", question);
+    console.log("instructions: ", instructions);
+
     const json = JSON.stringify({
-      "uuid": uuid,
-      "question": question,
-      "instructions": instructions.map(i => i.instruction),
-      "chatHistory": chatHistory,
+      uuid: uuid,
+      question: question,
+      instructions: instructions.map((i) => i.instruction),
+      chatHistory: chatHistory,
     });
 
     const response = await fetch(`${this.baseUrl}/api/v1/query`, {
       method: "POST",
       headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
       body: json,
     });
 
-    return response;
+    const data = await response.json();
+    return data; // Return the parsed JSON data
   }
 }
 
@@ -70,26 +82,32 @@ class Instruction {
 
 class AnalyzeInstruction extends Instruction {
   constructor() {
-    super("Identify gaps, considerations, and implications of your policies given your industry, needs, and organisation size.");
+    super(
+      "Identify gaps, considerations, and implications of your policies given your industry, needs, and organisation size."
+    );
   }
 }
 
 class CompareInstruction extends Instruction {
   constructor(apiService) {
-    super("Check whether your policy complies with governmental policies, and aligns with industry standards.");
+    super(
+      "Check whether your policy complies with governmental policies, and aligns with industry standards."
+    );
   }
 }
 
 class ClarifyInstruction extends Instruction {
   constructor(apiService) {
-    super("Clarify ambiguities in your policies to ensure they are easily understood and effectively implemented.");
+    super(
+      "Clarify ambiguities in your policies to ensure they are easily understood and effectively implemented."
+    );
   }
 }
 
-export { 
-  ApiService, 
-  Instruction, 
-  AnalyzeInstruction, 
-  CompareInstruction, 
-  ClarifyInstruction 
+export {
+  ApiService,
+  Instruction,
+  AnalyzeInstruction,
+  CompareInstruction,
+  ClarifyInstruction,
 };

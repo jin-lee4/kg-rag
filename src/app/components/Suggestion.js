@@ -37,7 +37,9 @@ const Suggestion = ({ borderColor, title, description }) => {
         </p>
       </div>
       <div id="suggestion-text">
-        <p>{description}</p>
+        {description.split("\n").map((line, index) => (
+          <p key={index}>{line}</p>
+        ))}{" "}
       </div>
       {isChatVisible && (
         <div id="chat-container">

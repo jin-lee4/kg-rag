@@ -9,16 +9,18 @@ const Mode = ({
   onToggle,
 }) => {
   return (
-    <div className="flex items-start justify-between border-b py-4 border-gray-200 w-full">
+    <div className="flex items-start justify-between py-4 w-full">
       <div
         className={`flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full text-white font-bold`}
         style={{ backgroundColor: bgColor }}
       >
-        <h3 id="count">{count}</h3>
+        <h3 id="count" className="large-button-text">
+          {count}
+        </h3>
       </div>
       <div className="ml-4 flex-grow">
         <div className="flex justify-between items-center">
-          <h3>{title}</h3>
+          <p className="large-button-text">{title}</p>
           <Toggle
             onToggle={onToggle}
             className="items-end"

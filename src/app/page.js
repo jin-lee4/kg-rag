@@ -5,6 +5,7 @@ import Upload from "./components/Upload";
 import Modes from "./components/Modes";
 import Settings from "./components/Settings";
 import Suggestions from "./components/Suggestions";
+import Suggestion from "./components/Suggestion";
 
 export default function Home() {
   const [modes, setModes] = useState([]);
