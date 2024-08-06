@@ -138,13 +138,198 @@ h3 {
   background: var(--document-color);
   box-shadow: 2px 2px 6px 0px rgba(224, 128, 114, 0.15);
   flex-direction: column;
+  justify-content: space-between;
   width: 100%;
   /* Ensure the container takes the full width */
+  transition: transform 0.2s, box-shadow 0.2s; /* Smooth animation */
+  cursor: pointer; /* Indicates interactive element */
+  position: relative; /* To position the icons */
+}
+
+#suggestion-container:hover {
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.small-text {
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  text-transform: uppercase;
+  color: var(--text-color);
 }
 
 #suggestion-text {
-  flex: 1 0 0;
+  /* flex: 1 0 0; */
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-color);
 }
+
+.space-y-3.5 > * + * {
+  margin-top: 20px; /* Increase spacing between suggestion boxes */
+}
+
+.icons-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 18.65px; /* Specific gap between icons */
+  margin-top: 10px;
+  bottom: 20px;
+  right: 20px;
+  justify-content: flex-end;
+  opacity: 0; /* Initially hide the icons */
+  transition: opacity 0.2s; /* Smooth transition for showing/hiding icons */
+}
+
+.icons-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+}
+
+#suggestion-container:hover .icons-container {
+  opacity: 1; /* Show the icons on hover */
+}
+
+.icon-wrapper {
+  position: relative; /* Needed for tooltip positioning */
+}
+
+.icons-container img {
+  width: 15px; /* Adjust size as needed */
+  height: 15px; /* Adjust size as needed */
+  cursor: pointer; /* Indicates interactive element */
+}
+
+.icons-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+}
+
+#suggestion-container:hover .icons-container {
+  opacity: 1; /* Show the icons on hover */
+}
+
+
+.tooltip {
+  visibility: hidden;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 2px 5px; /* Adjust padding to fit text in one line */
+  font-size: 12px; /* Make the text smaller */
+  white-space: nowrap; /* Ensure the tooltip stays in one line */
+  position: absolute;
+  z-index: 1;
+  top: 20px; /* Position below the icon */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip::after {
+  content: '';
+  position: absolute;
+  top: -7px; /* Arrow pointing upwards */
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #555 transparent;
+}
+
+.icon-wrapper:hover .tooltip,
+.icon-wrapper:focus .tooltip,
+.icon-wrapper:active .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+.dropdown-menu {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 10px;
+  z-index: 9999; /* Ensure this is higher than other elements */
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdown-icon {
+  width: 16px; /* Adjust size as needed */
+  height: 16px; /* Adjust size as needed */
+  margin-right: 8px; /* Space between icon and text */
+}
+
+.icon-wrapper {
+  position: relative; /* Needed for dropdown positioning */
+  z-index: 1; /* Ensure the icon is above other elements */
+}
+
+.icon-wrapper:focus .dropdown-menu {
+  display: block;
+}
+
+.tooltip {
+  visibility: hidden;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 2px 5px; /* Adjust padding to fit text in one line */
+  font-size: 12px; /* Make the text smaller */
+  white-space: nowrap; /* Ensure the tooltip stays in one line */
+  position: absolute;
+  z-index: 1000; /* Ensure tooltip appears above other elements */
+  top: 30px; /* Position below the icon */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip::after {
+  content: '';
+  position: absolute;
+  top: -5px; /* Arrow pointing upwards */
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #555 transparent;
+}
+
+.icon-wrapper:hover .tooltip,
+.icon-wrapper:focus .tooltip,
+.icon-wrapper:active .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tooltip.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+
 
 #right-panel {
   min-width: 25%;
