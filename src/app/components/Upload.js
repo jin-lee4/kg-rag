@@ -8,30 +8,14 @@ import {
   ClarifyInstruction,
 } from "../util/backend.js";
 
-const Upload = ({ modes, onSuggestions, onUploadStatus }) => {
+const Upload = ({ selectedModes, onSuggestions, onUploadStatus }) => {
   let service = new ApiService("http://localhost:8504");
-
-  const test = async () => {
-    let service = new ApiService("http://localhost:8504");
-    let analyze_inst = new AnalyzeInstruction(service);
-    let compare_inst = new CompareInstruction(service);
-    let clarify_inst = new ClarifyInstruction(service);
-
-    console.log("asking analyze question");
-    console.log(
-      await analyze_inst.query(
-        "02b2b870-7ed9-4500-9931-2a17d0b06c70",
-        "Who was empress elizabeth?"
-      )
-    );
-  };
 
   const [file, setFile] = useState(null);
   const [text, setText] = useState("");
-  const [analysis, setAnalysis] = useState("");
   const [isUploaded, setIsUploaded] = useState(false);
-  const [isAnalyzed, setIsAnalyzed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false); // Tooltip state
 
   useEffect(() => {
     onUploadStatus(isUploaded);
@@ -41,24 +25,11 @@ const Upload = ({ modes, onSuggestions, onUploadStatus }) => {
     setFile(event.target.files[0]);
   };
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const files = e.dataTransfer.files;
-    if (files.length) {
-      setFile(files[0]);
-      handleUpload();
-    }
-  };
-
   const handleUpload = async () => {
     if (!file) return;
     setIsLoading(true); // Set loading to true when upload starts
+
+    handleModes();
 
     const formData = new FormData();
     formData.append("file", file);
@@ -79,6 +50,7 @@ const Upload = ({ modes, onSuggestions, onUploadStatus }) => {
       body: formData,
     });
 
+    // OCR text is extracted from PDF
     if (uploadResponse.ok) {
       const result = await uploadResponse.json();
       const ocrResponse = await fetch("/api/ocr", {
@@ -89,6 +61,7 @@ const Upload = ({ modes, onSuggestions, onUploadStatus }) => {
         body: JSON.stringify({ filePath: result.filePath }),
       });
 
+      //Text is analyzed for suggestions
       if (ocrResponse.ok) {
         const ocrResult = await ocrResponse.json();
         setText(ocrResult.text);
@@ -106,58 +79,68 @@ const Upload = ({ modes, onSuggestions, onUploadStatus }) => {
   };
 
   const analyzeText = async (uuid, extractedText) => {
-    const instructions = {
-      analyze: new AnalyzeInstruction(),
-      compare: new CompareInstruction(),
-      clarify: new ClarifyInstruction(),
-    };
+    const instructions = [];
 
-    // const selectedInstructions = modes.map((mode) => instructions[mode]);
-    // console.log("selected instructions: ", selectedInstructions.type);
-    console.log(uuid);
-
-    const response = await service.query(
-      uuid,
-      extractedText,
-      [
-        new AnalyzeInstruction(),
-        new ClarifyInstruction(),
-        new Instruction(
-          "You are a helpful assistant who is an expert in AI policies for tech companies with employees under 50 people. Provide suggestions on how to improve the company's draft of the given AI policies. Provide in the form of a list of suggestions (5 max). Do not add any other text besides the list."
-        ),
-      ],
-      []
+    // Base instruction
+    instructions.push(
+      new Instruction(
+        "You are a helpful assistant who is an expert in AI policies. Provide suggestions on how to improve the company's draft of the given AI policies. Provide a list of suggestions, starting a new line at each one. Each suggestion must have one of the modes, Analyze, Compare, Clarify, at the start based on what prompt it is best associated with. Follow the format: '(MODE): SUGGESTION TEXT\n'. Do not add any other text or explanation, do not number the list. Provide in raw text format."
+      )
     );
 
-    console.log("text analyzed successfully: ", response.response);
+    // Add mode-specific instructions
+    if (selectedModes.analyze) {
+      instructions.push(new AnalyzeInstruction());
+    }
+    if (selectedModes.compare) {
+      instructions.push(new CompareInstruction());
+    }
+    if (selectedModes.clarify) {
+      instructions.push(new ClarifyInstruction());
+    }
+
+    console.log(uuid);
+
+    const response = await service.query(uuid, extractedText, instructions, []);
+
+    console.log("Text analyzed successfully: ", response.response);
     return response;
   };
 
+  const handleModes = () => {
+    if (
+      !selectedModes.analyze &&
+      !selectedModes.compare &&
+      !selectedModes.clarify
+    ) {
+      setShowTooltip(true); // Show tooltip if no mode is selected
+      setTimeout(() => setShowTooltip(false), 3000); // Hide tooltip after 3 seconds
+      return;
+    }
+  };
+
+    const isModeSelected =
+      selectedModes.analyze || selectedModes.compare || selectedModes.clarify;
+
+
+  // Returned suggestions are parsed into a list of objects with title and description
   const parseSuggestions = (responseText) => {
     const suggestionLines = responseText.split("\n");
     const suggestions = [];
-    let currentSuggestion = "";
 
     suggestionLines.forEach((line) => {
-      const isNumberedLine = /^\d+\./.test(line.trim());
-      if (isNumberedLine) {
-        if (currentSuggestion) {
-          suggestions.push(currentSuggestion.trim());
-        }
-        currentSuggestion = line.trim();
-      } else {
-        currentSuggestion += ` ${line.trim()}`;
+      const modeRegex = /^(ANALYZE|COMPARE|CLARIFY):\s*(.*)$/i;
+      const match = line.match(modeRegex);
+
+      if (match) {
+        const mode =
+          match[1].charAt(0).toUpperCase() + match[1].slice(1).toLowerCase();
+        const description = match[2];
+        suggestions.push({ title: mode, description });
       }
     });
 
-    if (currentSuggestion) {
-      suggestions.push(currentSuggestion.trim());
-    }
-
-    return suggestions.map((suggestion, index) => ({
-      title: `Analyze`,
-      description: suggestion,
-    }));
+    return suggestions;
   };
 
   return (
@@ -172,7 +155,7 @@ const Upload = ({ modes, onSuggestions, onUploadStatus }) => {
           <pre className="extracted-text">{text} </pre>
         </div>
       ) : (
-        <div id="upload-box" onDragOver={handleDragOver} onDrop={handleDrop}>
+        <div id="upload-box">
           <div id="upload-content">
             <div>
               <label htmlFor="fileInput" className="cursor-pointer">
@@ -202,9 +185,7 @@ const Upload = ({ modes, onSuggestions, onUploadStatus }) => {
             </div>
             <div className="items-center justify-center flex flex-col space-y-3">
               <h4>
-                <label htmlFor="fileInput">
-                  Drag and drop an file or browse
-                </label>
+                <label htmlFor="fileInput">Browse files to upload</label>
               </h4>
               <input
                 id="fileInput"
@@ -217,9 +198,18 @@ const Upload = ({ modes, onSuggestions, onUploadStatus }) => {
                 className="hidden"
               />
               <p>File must be PDF</p>
-              <button onClick={handleUpload} className="btn btn-primary">
+              <button
+                onClick={handleUpload}
+                className="btn btn-primary"
+                disabled={!isModeSelected}
+              >
                 <p>Upload</p>
               </button>
+              {!isModeSelected && (
+                <div className="tooltip">
+                  <p>No mode selected. Please select at least one mode.</p>
+                </div>
+              )}
             </div>
           </div>
         </div>

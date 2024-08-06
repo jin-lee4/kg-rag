@@ -9,7 +9,7 @@
   --text-color: #2c2e3a;
   --background-color: #f6f6f6;
   --document-color: #fff;
-  --disabled-state: rgba(44, 46, 58, 0.15);
+  --disabled-state: rgba(0, 0, 0, 0.15);
   --border: rgba(0, 0, 0, 0.15);
   --box-shadow: rgba(0, 0, 0, 0.2);
   --small-text: rgba(0, 0, 0, 0.6);
@@ -31,12 +31,13 @@
   --disabled-state: rgba(255, 255, 255, 0.15);
   --box-shadow: rgba(248, 247, 247, 0.2);
   --small-text: rgba(255, 255, 255, 0.6);
-  --border: rgba(255, 255, 255, 0.4);
+  --border-upload: rgba(255, 255, 255, 0.4);
+  --border: rgba(255, 255, 255, 0.15);
 
   /* dark mode annotations */
-  --analyse: ##9d87d9;
-  --compare: ##ce6969;
-  --clarify: ##4c9958;
+  --analyse: #8368CC;
+  --compare: #CE6969;
+  --clarify: #4C9958;
   --analyse-annotation: rgba(131, 104, 204, 0.15);
   --compare-annotation: rgba(206, 105, 105, 0.15);
   --clarify-annotation: rgba(76, 153, 88, 0.15);
@@ -246,36 +247,6 @@ h4 {
   position: relative;
 }
 
-.suggestion-options-tooltip {
-  display: none;
-  position: absolute;
-  background-color: #333;
-  color: #fff;
-  padding: 5px;
-  border-radius: 3px;
-  font-size: 12px;
-  white-space: nowrap;
-  z-index: 1000;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: -5px;
-}
-
-.suggestion-options-tooltip-visible {
-  display: inline-flex;
-}
-
-.suggestion-options-tooltip-arrow {
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid #333;
-  position: absolute;
-  top: 100%;
-}
-
 #suggestions-container {
   display: flex;
   align-items: flex-start;
@@ -286,14 +257,13 @@ h4 {
 
 #upload-box {
   display: flex;
-  padding: 248px 0;
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  border: 3px dashed var(--border);
+  border: 3px dashed var(--border-upload);
   background: var(--document-color);
-  height: 100%;
   width: 100%;
+  height: 100%
 }
 
 #upload-content {
@@ -303,6 +273,15 @@ h4 {
   justify-content: center;
   align-items: center;
   gap: 44px;
+}
+
+.btn[disabled] {
+  color: var(--disabled-state);
+  cursor: not-allowed;
+}
+
+#upload-btn {
+  
 }
 
 #how-it-works {
@@ -332,22 +311,21 @@ h4 {
   position: absolute;
 }
 
-#right-panel {
-  max-width: 25%;
-  flex: 1;
-  /* height: 100vh; Adjust based on your preference */
-}
-
 #center-panel {
   min-width: 50%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
 }
 
-#left-panel {
+#left-panel, #right-panel {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  max-width: 25%;
+  min-width: 25%;
   flex: 1;
+  height: 100%
 }
 
 #settings-panel {

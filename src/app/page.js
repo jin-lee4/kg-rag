@@ -8,12 +8,16 @@ import Suggestions from "./components/Suggestions";
 import Suggestion from "./components/Suggestion";
 
 export default function Home() {
-  const [modes, setModes] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [isUploaded, setIsUploaded] = useState(false);
+  const [selectedModes, setSelectedModes] = useState({
+    analyze: false,
+    compare: false,
+    clarify: false,
+  });
 
   const handleModesChange = (selectedModes) => {
-    setModes(Object.keys(selectedModes).filter((mode) => selectedModes[mode]));
+    setSelectedModes(selectedModes);
   };
 
   const handleSuggestions = (newSuggestions) => {
@@ -25,12 +29,9 @@ export default function Home() {
   };
 
   return (
-    <main className="flex flex-col items-center pb-12 h-screen px-12">
-      <div className="flex space-x-5 mx-12 h-full w-full">
-        <div
-          id="left-panel"
-          className="flex flex-col justify-between space-y-6 w-1/4 h-full"
-        >
+    <main className="flex flex-col items-center pb-3 px-12 h-screen">
+      <div className="flex space-x-5 mx-12 w-full h-full pb-3">
+        <div id="left-panel" className="space-y-6">
           <div>
             <Modes onModesChange={handleModesChange} />
           </div>
@@ -38,24 +39,22 @@ export default function Home() {
             <Settings />
           </div>
         </div>
-        <div id="center-panel" className="flex-grow flex flex-col h-full">
+        <div id="center-panel" className="">
           <Upload
-            modes={modes}
+            selectedModes={selectedModes}
             onSuggestions={handleSuggestions}
             onUploadStatus={handleUploadStatus}
           />
         </div>
-        <div id="right-panel" className="flex-grow flex flex-col h-full">
-          {!isUploaded ? (
-            <div id="how-it-works">
-              <h3>How it works</h3>
-              <h3>1. Upload your policy document</h3>
-              <h3>2. Ruleaid will generate insights</h3>
-              <h3>3. Revise, re-prompt, and revise!</h3>
-            </div>
-          ) : suggestions.length > 0 ? (
-            <Suggestions suggestions={suggestions} />
-          ) : null}
+        <div id="right-panel" className="">
+          { /* If uploaded, show suggestions, else show nothing */ }
+          { !isUploaded ? (
+            <div>
+              </div>
+          ) : 
+              suggestions.length > 0 ? (
+                <Suggestions suggestions={suggestions} />
+               ) : null}
         </div>
       </div>
     </main>
