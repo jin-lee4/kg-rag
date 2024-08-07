@@ -1,0 +1,11 @@
+#suggestions-container {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  overflow-y: scroll;
+  height: 100%;
+}
+
+#suggestions-container::-webkit-scrollbar {
+  display: none;
+}

@@ -1,0 +1,41 @@
+#chat-container {
+  margin-top: 8px;
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+#input-container {
+  margin-bottom: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+#message-input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid hsl(0, 0%, 80%);
+  margin-bottom: 16px;
+  box-sizing: border-box;
+}
+
+#message-buttons-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+#cancel-message {
+  border: none;
+  color: #555;
+  cursor: pointer;
+}
+
+#submit-message {
+  background-color: #333;
+  border: none;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}

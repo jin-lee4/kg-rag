@@ -1,11 +1,10 @@
 "use client";
 import { useState } from "react";
 
-import Upload from "./components/Upload";
+import Upload from "./components/Upload/Upload";
 import Modes from "./components/Modes";
 import Settings from "./components/Settings";
-import Suggestions from "./components/Suggestions";
-import Suggestion from "./components/Suggestion";
+import Suggestions from "./components/Suggestions/Suggestions";
 
 export default function Home() {
   const [suggestions, setSuggestions] = useState([]);
@@ -39,22 +38,20 @@ export default function Home() {
             <Settings />
           </div>
         </div>
-        <div id="center-panel" className="">
+        <div id="center-panel">
           <Upload
             selectedModes={selectedModes}
             onSuggestions={handleSuggestions}
             onUploadStatus={handleUploadStatus}
           />
         </div>
-        <div id="right-panel" className="">
-          { /* If uploaded, show suggestions, else show nothing */ }
-          { !isUploaded ? (
-            <div>
-              </div>
-          ) : 
-              suggestions.length > 0 ? (
-                <Suggestions suggestions={suggestions} />
-               ) : null}
+        <div id="right-panel">
+          {/* If uploaded, show suggestions, else show nothing */}
+          {!isUploaded ? (
+            <div></div>
+          ) : suggestions.length > 0 ? (
+            <Suggestions suggestions={suggestions} />
+          ) : null}
         </div>
       </div>
     </main>

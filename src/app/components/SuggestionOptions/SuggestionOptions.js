@@ -1,30 +1,31 @@
 "use client";
 import { useState } from "react";
+import styles from "./SuggestionOptions.module.css";
 
 const SuggestionOptions = ({ onStartChat }) => {
-  const [tooltipText, setTooltipText] = useState("");
-  const [tooltipVisible, setTooltipVisible] = useState(false);
-  const [tooltipStyle, setTooltipStyle] = useState({});
+  // const [tooltipText, setTooltipText] = useState("");
+  // const [tooltipVisible, setTooltipVisible] = useState(false);
+  // const [tooltipStyle, setTooltipStyle] = useState({});
 
   //TODO: Fix tooltips, don't display on hover
-  const handleMouseOver = (e, text) => {
-    const rect = e.target.getBoundingClientRect();
-    setTooltipText(text);
-    setTooltipStyle({
-      // left: `${rect.left + window.scrollX}px`,
-      // top: `${rect.bottom + window.scrollY}px`,
-    });
-    setTooltipVisible(true);
-  };
+  // const handleMouseOver = (e, text) => {
+  //   const rect = e.target.getBoundingClientRect();
+  //   setTooltipText(text);
+  //   setTooltipStyle({
+  //     // left: `${rect.left + window.scrollX}px`,
+  //     // top: `${rect.bottom + window.scrollY}px`,
+  //   });
+  //   setTooltipVisible(true);
+  // };
 
-  const handleMouseOut = () => {
-    setTooltipVisible(false);
-  };
+  // const handleMouseOut = () => {
+  //   setTooltipVisible(false);
+  // };
 
   return (
-    <div id="suggestion-options-container">
+    <div id={styles["suggestion-options-container"]}>
       {/* Tooltip */}
-      <div
+      {/* <div
         className={`suggestion-options-tooltip ${
           tooltipVisible ? "suggestion-options-tooltip-visible" : ""
         }`}
@@ -32,7 +33,7 @@ const SuggestionOptions = ({ onStartChat }) => {
       >
         {tooltipText}
         <div className=".suggestion-options-tooltip-arrow"></div>
-      </div>
+      </div> */}
       {/* Start chat */}
       <svg
         xmlns="http://www.w3.org/2000/svg"

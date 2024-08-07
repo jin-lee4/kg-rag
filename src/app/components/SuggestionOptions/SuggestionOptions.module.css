@@ -1,0 +1,12 @@
+#suggestion-options-container {
+  display: flex;
+  padding: 8px 10px;
+  justify-content: flex-end;
+  border-radius: 4px;
+  align-items: center;
+  gap: 18.653px;
+  align-self: stretch;
+  width: 100%;
+  margin-top: 12px;
+  position: relative;
+}

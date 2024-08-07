@@ -1,0 +1,19 @@
+#header-container {
+  display: flex;
+  height: 47px;
+  align-items: left;
+  flex-shrink: 0;
+}
+
+#header {
+  padding: 41px 48px 42px 48px;
+}
+
+#header-text {
+  font-family: "Abhaya Libre ExtraBold", "serif";
+  font-size: 42.235px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  color: var(--text-color);
+}

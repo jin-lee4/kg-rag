@@ -1,11 +1,12 @@
 "use client";
 
 import React from "react";
-import Suggestion from "./Suggestion";
+import Suggestion from "../Suggestion/Suggestion";
+import styles from "./Suggestions.module.css";
 
 const Suggestions = ({ suggestions }) => {
   return (
-    <div id="suggestions-container">
+    <div id={styles["suggestions-container"]}>
       {suggestions.map((suggestion, index) => (
         <Suggestion
           key={index}

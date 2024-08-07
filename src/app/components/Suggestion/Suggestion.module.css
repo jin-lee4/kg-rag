@@ -1,0 +1,27 @@
+#suggestion-container {
+  display: flex;
+  padding: 20px 25px;
+  align-self: stretch;
+  gap: 10px;
+  align-items: flex-start;
+  border-radius: 4px;
+  background: var(--document-color);
+  box-shadow: 2px 2px 6px 0px rgba(224, 128, 114, 0.15); /* change based on mode */
+  flex-direction: column;
+  margin-top: 14px; /* should change based on location of annotations */
+  margin-bottom: 14px;
+  /* Ensure the container takes the full width */
+}
+
+#suggestion-text {
+  flex: 1 0 0;
+}
+
+.small-text {
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  text-transform: uppercase;
+  color: var(--small-text);
+}

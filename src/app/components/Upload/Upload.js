@@ -6,7 +6,9 @@ import {
   AnalyzeInstruction,
   CompareInstruction,
   ClarifyInstruction,
-} from "../util/backend.js";
+} from "../../util/backend.js";
+
+import styles from "./Upload.module.css";
 
 const Upload = ({ selectedModes, onSuggestions, onUploadStatus }) => {
   let service = new ApiService("http://localhost:8504");
@@ -15,7 +17,6 @@ const Upload = ({ selectedModes, onSuggestions, onUploadStatus }) => {
   const [text, setText] = useState("");
   const [isUploaded, setIsUploaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false); // Tooltip state
 
   useEffect(() => {
     onUploadStatus(isUploaded);
@@ -28,8 +29,6 @@ const Upload = ({ selectedModes, onSuggestions, onUploadStatus }) => {
   const handleUpload = async () => {
     if (!file) return;
     setIsLoading(true); // Set loading to true when upload starts
-
-    handleModes();
 
     const formData = new FormData();
     formData.append("file", file);
@@ -107,21 +106,8 @@ const Upload = ({ selectedModes, onSuggestions, onUploadStatus }) => {
     return response;
   };
 
-  const handleModes = () => {
-    if (
-      !selectedModes.analyze &&
-      !selectedModes.compare &&
-      !selectedModes.clarify
-    ) {
-      setShowTooltip(true); // Show tooltip if no mode is selected
-      setTimeout(() => setShowTooltip(false), 3000); // Hide tooltip after 3 seconds
-      return;
-    }
-  };
-
-    const isModeSelected =
-      selectedModes.analyze || selectedModes.compare || selectedModes.clarify;
-
+  const isModeSelected =
+    selectedModes.analyze || selectedModes.compare || selectedModes.clarify;
 
   // Returned suggestions are parsed into a list of objects with title and description
   const parseSuggestions = (responseText) => {
@@ -144,19 +130,19 @@ const Upload = ({ selectedModes, onSuggestions, onUploadStatus }) => {
   };
 
   return (
-    <div id="extracted-text-box">
+    <div id={styles["extracted-text-box"]}>
       {isLoading ? (
-        <div className="loading-indicator">
+        <div>
           <p>Uploading and processing file...</p>
           {/* You can add a spinner or other loading animation here */}
         </div>
       ) : isUploaded ? (
-        <div id="extracted-text">
-          <pre className="extracted-text">{text} </pre>
+        <div id={styles["extracted-text"]}>
+          <pre className={styles["extracted-text"]}>{text}</pre>
         </div>
       ) : (
-        <div id="upload-box">
-          <div id="upload-content">
+        <div id={styles["upload-box"]}>
+          <div id={styles["upload-content"]}>
             <div>
               <label htmlFor="fileInput" className="cursor-pointer">
                 <svg
@@ -206,7 +192,7 @@ const Upload = ({ selectedModes, onSuggestions, onUploadStatus }) => {
                 <p>Upload</p>
               </button>
               {!isModeSelected && (
-                <div className="tooltip">
+                <div>
                   <p>No mode selected. Please select at least one mode.</p>
                 </div>
               )}
