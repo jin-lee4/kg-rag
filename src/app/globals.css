@@ -299,7 +299,7 @@ h3 {
   white-space: nowrap; /* Ensure the tooltip stays in one line */
   position: absolute;
   z-index: 1000; /* Ensure tooltip appears above other elements */
-  top: 30px; /* Position below the icon */
+  top: 18px; /* Position below the icon */
   left: 50%;
   transform: translateX(-50%);
   opacity: 0;
@@ -309,7 +309,7 @@ h3 {
 .tooltip::after {
   content: '';
   position: absolute;
-  top: -5px; /* Arrow pointing upwards */
+  top: -8px; /* Arrow pointing upwards */
   left: 50%;
   transform: translateX(-50%);
   border-width: 5px;

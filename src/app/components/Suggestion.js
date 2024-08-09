@@ -96,9 +96,9 @@ const speakerIcon = '/fluent_speaker-2-16-filled.svg';
 const Suggestion = ({ borderColor, title, description }) => {
   const icons = [
     { src: replyIcon, alt: 'Reply Icon', tooltip: 'Reply' },
-    { src: regenerateIcon, alt: 'Regenerate Icon', tooltip: 'Regenerate' },
-    { src: settingsIcon, alt: 'Settings Icon', tooltip: 'Settings', isSettings: true },
-    { src: speakerIcon, alt: 'Speaker Icon', tooltip: 'Speaker' }
+    { src: regenerateIcon, alt: 'Regenerate Icon', tooltip: 'Regenerate suggestions' },
+    { src: settingsIcon, alt: 'Settings Icon', tooltip: 'Modify generations', isSettings: true },
+    { src: speakerIcon, alt: 'Speaker Icon', tooltip: 'Speak aloud' }
   ];
 
   const iconRefs = useRef([]);
